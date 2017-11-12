@@ -298,7 +298,7 @@ class Tree:
                 if expr == "current":
                     return current
                 elif expr == "previous":
-                    return previous
+                    return previous 
                 elif expr == "previous2":
                     return previous2
                 else:
