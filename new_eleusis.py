@@ -13,7 +13,7 @@ def is_color(s):
 
 def is_value(s):
     """Test if parameter is a number or can be interpreted as a number"""
-    return s.isdigit() or (len(s) == 1 and s[0] in "AJQK")
+    return isinstance(s, int) or (len(s) == 1 and s[0] in "AJQK")
 
 
 def is_card(s):
@@ -23,8 +23,7 @@ def is_card(s):
 
 def value_to_number(name):
     """Given the "value" part of a card, returns its numeric value"""
-    values = [None, 'A', '2', '3', '4', '5', '6',
-              '7', '8', '9', '10', 'J', 'Q', 'K']
+    values = [None, 'A', '2', '3', '4', '5', '6','7', '8', '9', '10', 'J', 'Q', 'K']
     return values.index(name)
 
 
@@ -80,8 +79,7 @@ def less(a, b):
     elif is_value(a):
         return int(a) < int(b)
     else:
-        return a < b
-
+        return (a) < str(b)         ##-- Changed the datatype of from integer to str for comparing
 
 def greater(a, b):
     """The opposite of less"""
@@ -92,8 +90,8 @@ def plus1(x):
     """Returns the next higher value, suit, or card in a suit;
        must be one. If a color, returns the other color"""
     if is_value(x):
-        assert value_to_number(x) < 13
-        return number_to_value(value_to_number(x) + 1)
+        assert(int(x) < 13)         #changed datatype of x to int
+        return value_to_number(x) + 1
     elif is_suit(x):
         assert x != 'S'
         return "CDHS"["CDHS".index(x) + 1]
@@ -229,8 +227,9 @@ def parse(s):
     def parse2(s, i):
         if s[i] in function_names:
             f = to_function.get(s[i])
-            assert s[i + 1] == "(", "No open parenthesis after " + s[i]
+            assert s[i + 1] == "(", "'No open parenthesis after " + s[i]
             (arg, i) = parse2(s, i + 2)
+            print(arg,i)
             args = [arg]
             while s[i] != ")":
                 (arg, i) = parse2(s, i)
@@ -298,7 +297,7 @@ class Tree:
                 if expr == "current":
                     return current
                 elif expr == "previous":
-                    return previous 
+                    return previous
                 elif expr == "previous2":
                     return previous2
                 else:
